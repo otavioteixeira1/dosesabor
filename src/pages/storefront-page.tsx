@@ -6,6 +6,7 @@ import { StatusBadge } from '../components/status-badge'
 import { useCart } from '../context/cart-context'
 import { DEFAULT_CHECKOUT_VALUES, DEFAULT_SETTINGS } from '../lib/constants'
 import { formatCurrency } from '../lib/format'
+import { loadCheckoutProfile, saveCheckoutProfile } from '../lib/storage'
 import { isSupabaseConfigured } from '../lib/supabase'
 import { buildWhatsappMessage, buildWhatsappUrl } from '../lib/whatsapp'
 import { createOrder, fetchPublicCatalog } from '../services/store-service'
@@ -24,7 +25,7 @@ export function StorefrontPage() {
     products: [],
     settings: DEFAULT_SETTINGS,
   })
-  const [checkout, setCheckout] = useState<CheckoutFormValues>(DEFAULT_CHECKOUT_VALUES)
+  const [checkout, setCheckout] = useState<CheckoutFormValues>(() => loadCheckoutProfile(DEFAULT_CHECKOUT_VALUES))
   const [isLoading, setIsLoading] = useState(true)
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -60,6 +61,10 @@ export function StorefrontPage() {
       active = false
     }
   }, [])
+
+  useEffect(() => {
+    saveCheckoutProfile(checkout)
+  }, [checkout])
 
   const subtotal = items.reduce((total, item) => total + item.unitPrice * item.quantity, 0)
   const deliveryFee = checkout.fulfillmentType === 'entrega' ? catalog.settings.deliveryFee : 0
@@ -125,7 +130,10 @@ export function StorefrontPage() {
       window.location.href = whatsappUrl
     }
     clearCart()
-    setCheckout(DEFAULT_CHECKOUT_VALUES)
+    setCheckout((currentValues) => ({
+      ...currentValues,
+      notes: '',
+    }))
     setSuccessMessage(syncWarning || 'Pedido enviado com sucesso para o WhatsApp da loja.')
     setIsSubmitting(false)
   }
@@ -180,6 +188,12 @@ export function StorefrontPage() {
                 >
                   Ver carrinho
                 </button>
+                <a
+                  href="/admin/login"
+                  className="rounded-full border border-white/30 px-5 py-3 text-sm font-bold text-white/90"
+                >
+                  Acesso admin
+                </a>
               </div>
             </div>
             <div className="rounded-[28px] bg-white/14 p-5 backdrop-blur">
