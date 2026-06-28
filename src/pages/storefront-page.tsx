@@ -146,9 +146,6 @@ export function StorefrontPage() {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <BrandMark />
-              <div className="hidden rounded-full bg-[var(--color-shell)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-accent-strong)] md:block">
-                Delivery e retirada
-              </div>
             </div>
             <div className="flex items-center gap-3">
               <StatusBadge isOpen={catalog.settings.isStoreOpen} />
@@ -168,16 +165,10 @@ export function StorefrontPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-[var(--color-muted)] sm:text-sm">
-            <span className="rounded-full bg-white px-3 py-2 shadow-[0_8px_20px_rgba(18,39,56,0.04)]">
-              {catalog.settings.openingHours}
-            </span>
-            <span className="rounded-full bg-white px-3 py-2 shadow-[0_8px_20px_rgba(18,39,56,0.04)]">
-              Quiosque em {catalog.settings.kioskCity}
-            </span>
-            <span className="rounded-full bg-white px-3 py-2 shadow-[0_8px_20px_rgba(18,39,56,0.04)]">
-              Delivery em {catalog.settings.deliveryCity}
-            </span>
+          <div className="text-xs font-medium text-[var(--color-muted)] sm:text-sm">
+            <p>
+              {catalog.settings.openingHours} • Quiosque em {catalog.settings.kioskCity} • Delivery e retirada em {catalog.settings.deliveryCity}
+            </p>
           </div>
         </div>
       </header>
@@ -211,23 +202,6 @@ export function StorefrontPage() {
                 >
                   Ver carrinho
                 </button>
-                <a
-                  href="/admin/login"
-                  className="rounded-full border border-white/34 bg-white/10 px-6 py-3 text-sm font-bold text-white/92 backdrop-blur"
-                >
-                  Acesso admin
-                </a>
-              </div>
-              <div className="mt-6 flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-white/82">
-                <span className="rounded-full border border-white/18 bg-white/10 px-4 py-2 backdrop-blur">
-                  Pedido minimo {formatCurrency(catalog.settings.minimumOrder)}
-                </span>
-                <span className="rounded-full border border-white/18 bg-white/10 px-4 py-2 backdrop-blur">
-                  Entrega {formatCurrency(catalog.settings.deliveryFee)}
-                </span>
-                <span className="rounded-full border border-white/18 bg-white/10 px-4 py-2 backdrop-blur">
-                  Atendimento {catalog.settings.openingHours}
-                </span>
               </div>
             </div>
 
