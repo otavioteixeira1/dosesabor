@@ -49,7 +49,7 @@ export function StorefrontPage() {
         setCatalog(data)
       } catch (error) {
         if (!active) return
-        setErrorMessage(error instanceof Error ? error.message : 'Falha ao carregar o cardápio.')
+        setErrorMessage(error instanceof Error ? error.message : 'Falha ao carregar o cardapio.')
       } finally {
         if (active) setIsLoading(false)
       }
@@ -85,17 +85,17 @@ export function StorefrontPage() {
     }
 
     if (checkout.fulfillmentType === 'entrega' && (!checkout.deliveryAddress.trim() || !checkout.neighborhood.trim())) {
-      setErrorMessage('Informe endereço e bairro para entrega.')
+      setErrorMessage('Informe endereco e bairro para entrega.')
       return
     }
 
     if (total < catalog.settings.minimumOrder) {
-      setErrorMessage(`O pedido mínimo é ${formatCurrency(catalog.settings.minimumOrder)}.`)
+      setErrorMessage(`O pedido minimo e ${formatCurrency(catalog.settings.minimumOrder)}.`)
       return
     }
 
     if (!catalog.settings.isStoreOpen) {
-      setErrorMessage('A loja está fechada no momento. Abra o WhatsApp apenas se combinado com a equipe.')
+      setErrorMessage('A loja esta fechada no momento.')
       return
     }
 
@@ -118,17 +118,18 @@ export function StorefrontPage() {
       } catch (error) {
         syncWarning =
           error instanceof Error
-            ? `Pedido enviado no WhatsApp, mas não foi salvo no painel: ${error.message}`
+            ? `Pedido enviado no WhatsApp, mas nao foi salvo no painel: ${error.message}`
             : 'Pedido enviado no WhatsApp, mas sem sincronizar no painel.'
       }
     } else {
-      syncWarning = 'Supabase não configurado: o pedido será enviado apenas pelo WhatsApp.'
+      syncWarning = 'Supabase nao configurado: o pedido sera enviado apenas pelo WhatsApp.'
     }
 
     const popup = window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
     if (!popup) {
       window.location.href = whatsappUrl
     }
+
     clearCart()
     setCheckout((currentValues) => ({
       ...currentValues,
@@ -140,74 +141,108 @@ export function StorefrontPage() {
 
   return (
     <div className="min-h-screen bg-[var(--color-shell)]">
-      <header className="border-b border-[var(--color-line)] bg-white/90 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b border-[var(--color-line)] bg-white/88 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4">
-          <div className="flex items-center justify-between gap-4">
-            <BrandMark />
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <BrandMark />
+              <div className="hidden rounded-full bg-[var(--color-shell)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-accent-strong)] md:block">
+                Delivery e retirada
+              </div>
+            </div>
             <div className="flex items-center gap-3">
               <StatusBadge isOpen={catalog.settings.isStoreOpen} />
               <button
                 type="button"
                 onClick={() => setIsCartOpen(true)}
-                className="hidden rounded-full bg-[var(--color-highlight)] px-4 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(196,55,46,0.24)] sm:inline-flex"
+                className="hidden rounded-full bg-[linear-gradient(135deg,var(--color-highlight),#f06a55)] px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_34px_rgba(196,55,46,0.26)] sm:inline-flex"
               >
                 Carrinho ({itemCount})
               </button>
+              <a
+                href="/admin/login"
+                className="hidden rounded-full border border-[var(--color-line-strong)] bg-white px-4 py-3 text-sm font-semibold text-[var(--color-ink)] shadow-[0_10px_24px_rgba(18,39,56,0.08)] md:inline-flex"
+              >
+                Painel admin
+              </a>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-3 text-sm text-[var(--color-muted)]">
-            <span>{catalog.settings.openingHours}</span>
-            <span>Quiosque em {catalog.settings.kioskCity}</span>
-            <span>Delivery e retirada em {catalog.settings.deliveryCity}</span>
+
+          <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-[var(--color-muted)] sm:text-sm">
+            <span className="rounded-full bg-white px-3 py-2 shadow-[0_8px_20px_rgba(18,39,56,0.04)]">
+              {catalog.settings.openingHours}
+            </span>
+            <span className="rounded-full bg-white px-3 py-2 shadow-[0_8px_20px_rgba(18,39,56,0.04)]">
+              Quiosque em {catalog.settings.kioskCity}
+            </span>
+            <span className="rounded-full bg-white px-3 py-2 shadow-[0_8px_20px_rgba(18,39,56,0.04)]">
+              Delivery em {catalog.settings.deliveryCity}
+            </span>
           </div>
         </div>
       </header>
 
       <main className="mx-auto max-w-7xl px-4 pb-32 pt-6">
-        <section className="overflow-hidden rounded-[32px] bg-[linear-gradient(135deg,#0d4b65_0%,#16a7b6_48%,#f55a4a_100%)] px-5 py-8 text-white shadow-[0_24px_80px_rgba(13,75,101,0.25)]">
-          <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+        <section className="relative overflow-hidden rounded-[36px] border border-white/40 bg-[linear-gradient(130deg,#113a59_0%,#1497af_43%,#ef6352_100%)] px-5 py-8 text-white shadow-[0_30px_90px_rgba(13,75,101,0.24)]">
+          <div className="absolute -left-16 top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+          <div className="absolute -right-14 bottom-6 h-48 w-48 rounded-full bg-white/12 blur-3xl" />
+          <div className="relative grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/75">Cardápio oficial</p>
-              <h1 className="mt-3 max-w-xl font-[Fraunces] text-4xl font-bold leading-tight sm:text-5xl">
-                Doces finos, bolo no pote e sobremesas prontas para retirar ou receber em casa.
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-white/72">Cardapio oficial</p>
+              <h1 className="mt-3 max-w-2xl font-[Fraunces] text-4xl font-bold leading-[1.02] tracking-[-0.04em] sm:text-5xl md:text-6xl">
+                Doces finos com visual profissional e pedido rapido no celular.
               </h1>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-white/85">{catalog.settings.brandTagline}</p>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-white/86">
+                {catalog.settings.brandTagline} Monte seu pedido, escolha entrega ou retirada e finalize direto no WhatsApp da loja.
+              </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <a
                   href={`https://wa.me/${catalog.settings.whatsappNumber.replace(/\D/g, '')}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-full bg-white px-5 py-3 text-sm font-bold text-[var(--color-ink)]"
+                  className="rounded-full bg-white px-6 py-3 text-sm font-bold text-[var(--color-ink)] shadow-[0_16px_34px_rgba(15,49,70,0.18)]"
                 >
-                  Falar no WhatsApp
+                  Pedir no WhatsApp
                 </a>
                 <button
                   type="button"
                   onClick={() => setIsCartOpen(true)}
-                  className="rounded-full border border-white/30 px-5 py-3 text-sm font-bold text-white"
+                  className="rounded-full border border-white/34 bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur"
                 >
                   Ver carrinho
                 </button>
                 <a
                   href="/admin/login"
-                  className="rounded-full border border-white/30 px-5 py-3 text-sm font-bold text-white/90"
+                  className="rounded-full border border-white/34 bg-white/10 px-6 py-3 text-sm font-bold text-white/92 backdrop-blur"
                 >
                   Acesso admin
                 </a>
               </div>
+              <div className="mt-6 flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-white/82">
+                <span className="rounded-full border border-white/18 bg-white/10 px-4 py-2 backdrop-blur">
+                  Pedido minimo {formatCurrency(catalog.settings.minimumOrder)}
+                </span>
+                <span className="rounded-full border border-white/18 bg-white/10 px-4 py-2 backdrop-blur">
+                  Entrega {formatCurrency(catalog.settings.deliveryFee)}
+                </span>
+                <span className="rounded-full border border-white/18 bg-white/10 px-4 py-2 backdrop-blur">
+                  Atendimento {catalog.settings.openingHours}
+                </span>
+              </div>
             </div>
-            <div className="rounded-[28px] bg-white/14 p-5 backdrop-blur">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/75">Resumo da loja</p>
+
+            <div className="rounded-[30px] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0.08))] p-5 backdrop-blur-xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/76">Resumo da loja</p>
               <dl className="mt-4 space-y-4">
-                <div className="rounded-[24px] bg-white/10 p-4">
-                  <dt className="text-sm text-white/70">Pedido mínimo</dt>
+                <div className="rounded-[24px] border border-white/10 bg-white/10 p-4">
+                  <dt className="text-sm text-white/70">Pedido minimo</dt>
                   <dd className="mt-1 font-[Fraunces] text-3xl font-bold">{formatCurrency(catalog.settings.minimumOrder)}</dd>
                 </div>
-                <div className="rounded-[24px] bg-white/10 p-4">
-                  <dt className="text-sm text-white/70">Taxa padrão de entrega</dt>
+                <div className="rounded-[24px] border border-white/10 bg-white/10 p-4">
+                  <dt className="text-sm text-white/70">Taxa padrao de entrega</dt>
                   <dd className="mt-1 font-[Fraunces] text-3xl font-bold">{formatCurrency(catalog.settings.deliveryFee)}</dd>
                 </div>
-                <div className="rounded-[24px] bg-white/10 p-4">
+                <div className="rounded-[24px] border border-white/10 bg-white/10 p-4">
                   <dt className="text-sm text-white/70">Atendimento</dt>
                   <dd className="mt-1 text-lg font-semibold">{catalog.settings.openingHours}</dd>
                 </div>
@@ -229,7 +264,7 @@ export function StorefrontPage() {
               <a
                 key={category.id}
                 href={`#categoria-${category.slug}`}
-                className="rounded-full border border-[var(--color-line)] bg-white px-4 py-2 text-sm font-semibold text-[var(--color-ink)]"
+                className="rounded-full border border-[var(--color-line)] bg-white px-4 py-2 text-sm font-semibold text-[var(--color-ink)] shadow-[0_8px_18px_rgba(18,39,56,0.04)]"
               >
                 {category.name}
               </a>
@@ -238,7 +273,7 @@ export function StorefrontPage() {
 
           {isLoading ? (
             <div className="rounded-[28px] bg-white px-4 py-14 text-center text-sm text-[var(--color-muted)]">
-              Carregando cardápio...
+              Carregando cardapio...
             </div>
           ) : catalog.categories.length === 0 ? (
             <div className="rounded-[28px] bg-white px-4 py-14 text-center text-sm text-[var(--color-muted)]">
@@ -258,7 +293,7 @@ export function StorefrontPage() {
                           {category.name}
                         </p>
                         <h2 className="font-[Fraunces] text-3xl font-bold text-[var(--color-ink)]">
-                          {category.description || 'Seleção artesanal do dia'}
+                          {category.description || 'Selecao artesanal do dia'}
                         </h2>
                       </div>
                     </div>
@@ -285,7 +320,7 @@ export function StorefrontPage() {
       <button
         type="button"
         onClick={() => setIsCartOpen(true)}
-        className="fixed bottom-4 left-4 right-4 z-40 rounded-full bg-[var(--color-highlight)] px-5 py-4 text-sm font-bold text-white shadow-[0_24px_48px_rgba(196,55,46,0.24)] sm:hidden"
+        className="fixed bottom-4 left-4 right-4 z-40 rounded-full bg-[linear-gradient(135deg,var(--color-highlight),#f06a55)] px-5 py-4 text-sm font-bold text-white shadow-[0_24px_48px_rgba(196,55,46,0.24)] sm:hidden"
       >
         Abrir carrinho ({itemCount}) • {formatCurrency(total)}
       </button>
