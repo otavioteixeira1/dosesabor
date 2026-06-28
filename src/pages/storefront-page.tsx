@@ -160,7 +160,7 @@ export function StorefrontPage() {
                 href="/admin/login"
                 className="hidden rounded-full border border-[var(--color-line-strong)] bg-white px-4 py-3 text-sm font-semibold text-[var(--color-ink)] shadow-[0_10px_24px_rgba(18,39,56,0.08)] md:inline-flex"
               >
-                Painel admin
+                Loguin
               </a>
             </div>
           </div>
@@ -191,7 +191,7 @@ export function StorefrontPage() {
                   href={`https://wa.me/${catalog.settings.whatsappNumber.replace(/\D/g, '')}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-full bg-white px-6 py-3 text-sm font-bold text-[var(--color-ink)] shadow-[0_16px_34px_rgba(15,49,70,0.18)]"
+                  className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-bold text-[var(--color-ink)] shadow-[0_16px_34px_rgba(15,49,70,0.18)]"
                 >
                   Pedir no WhatsApp
                 </a>
